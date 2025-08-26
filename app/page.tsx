@@ -1,9 +1,8 @@
-
 import { fetchFiveRandom } from "@/lib/util";
-import RandomPokemon from "./(components)/random-pokemon";
-import FeaturedList from "./(components)/featured-list";
+import RandomPokemon from "./page/random-pokemon";
+import FeaturedList from "./page/featured-list";
 import { Suspense } from "react";
-
+import SearchArea from "@/app/page/search-area";
 
 export default async function Home() {
   const task = fetchFiveRandom();
@@ -17,14 +16,21 @@ export default async function Home() {
           Discover, search and explore the amazing world of Pokémon. Find
           <br /> your favourite and learn about their stats.
         </p>
-        <RandomPokemon />
+        <div className="pb-10">
+          <RandomPokemon />
+        </div>
       </section>
-      <section className="full-width h-full items-baseline ">
-        <h1 className="font-jaldi text-5xl text-center pt-10">
+      <section className="full-width items-center py-12 justify-items-center justify-center">
+        <Suspense>
+          <SearchArea />
+        </Suspense>
+      </section>
+      <section className="full-width content-center bg-[#F0F0FC] pt-10 pb-20">
+        <h1 className="font-jaldi text-5xl text-center pb-10">
           Featured Pokemon:
         </h1>
-        <div className="flex gap-4">
-          <Suspense fallback={<div>Laddar</div>}>
+        <div className="flex gap-4 justify-center">
+          <Suspense>
             <FeaturedList task={task} />
           </Suspense>
         </div>

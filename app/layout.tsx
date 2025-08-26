@@ -50,7 +50,7 @@ export default function RootLayout({
   ];
   return (
     <html lang="en">
-      <body className={`${jaldi.variable} ${jersey.variable} antialiased`}>
+      <body className={`${jaldi.variable} ${jersey.variable} antialiased min-h-dvh flex flex-col`}>
         <header className="content-grid">
           <nav className=" p-4 flex justify-between items-center">
             <div className="flex items-center gap-4">
