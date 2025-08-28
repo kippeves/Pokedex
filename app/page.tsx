@@ -45,7 +45,7 @@ export default async function Home({
         <h1 className="font-jaldi text-5xl text-center pb-10">
           Featured Pokemon:
         </h1>
-        <div className="breakout flex justify-center gap-4">
+        <div className="breakout flex flex-wrap justify-center gap-4">
           <Suspense>
             <FeaturedList task={task} />
           </Suspense>

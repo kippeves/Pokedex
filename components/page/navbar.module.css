@@ -1,0 +1,8 @@
+.menu {
+    overflow: hidden;
+    position: relative;
+    
+    &.show {
+        display: block;
+    }
+}

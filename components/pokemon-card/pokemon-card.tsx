@@ -19,7 +19,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
   const { flipped } = useCard();
   
   return (
-    <div className={`max-w-64 ${Styles.flipCard}`}>
+    <div className={`max-w-64 min-w-64 ${Styles.flipCard}`}>
       <div
         data-slot="card"
         className={cn(

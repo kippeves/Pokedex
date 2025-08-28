@@ -35,10 +35,10 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     pokemon && (
-      <article className="flex flex-col sm:gap-6 content-start justify-evenly grow p-6">
-        <section className="flex flex-wrap sm:gap-6 justify-evenly items-center gap-4 ">
-          <div className="flex flex-col h-70 justify-between w-[30rem]">
-            <section className="flex gap-2 justify-between">
+      <article className="flex flex-col gap-6 items-center justify-center grow xl:px-6 py-4 bg-gradient-to-br [background-image:linear-gradient(-10deg,_#C97FE4,_#AECDF6)]">
+        <section className="flex flex-wrap gap-6 justify-evenly items-center">
+          <div className="flex flex-col justify-evenly w-screen sm:w-[35rem] sm:h-[21rem] bg-white p-7 rounded-xl shadow-lg">
+            <section className="flex flex-wrap gap-2 justify-between">
               <h1 className="capitalize text-6xl items-center">
                 {pokemon.name}
               </h1>
@@ -46,18 +46,18 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
                 <TypeList types={pokemon.types} />
               </div>
             </section>
-            <section className="flex flex-col gap-2">
+            <section className="flex flex-col gap-2 z-10">
               <h2 className="text-5xl">Stats</h2>
-              <div className="grid grid-cols-6 items-center">
+              <div className="grid grid-cols-6 gap-1 items-center">
                 {pokemon.stats.map((e, i) => (
                   <Fragment key={i}>
                     <label className="col-span-2 capitalize" htmlFor={e.name}>
                       {e.name.replaceAll("-", " ")}
                     </label>
                     <span className="text-end pe-2 font-bold">{e.value}</span>
-                    <div className="h-3 col-span-2">
+                    <div className="h-3 col-span-2 ">
                       <div
-                        className={`h-full ${
+                        className={`h-full outline-5 outline-white ${
                           e.value > 75
                             ? "bg-green-700"
                             : e.value > 50
@@ -72,25 +72,27 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
               </div>
             </section>
           </div>
-          <div className="w-[30rem] flex justify-evenly gap-">
+          <div className="w-screen sm:w-[35rem] min-h-[21rem] z-0 flex flex-wrap justify-evenly items-center gap-2 rounded-xl bg-white shadow-lg p-6">
             <figure>
-              <CardImage pokemon={pokemon} side="front" />
+              <CardImage large pokemon={pokemon} side="front" />
               <figcaption className="capitalize text-center pt-4 italic">
                 {pokemon.name} Front
               </figcaption>
             </figure>
-            <figure>
-              <CardImage pokemon={pokemon} side="back" />
-              <figcaption className="capitalize text-center pt-4 italic">
-                {pokemon.name} Back
-              </figcaption>
-            </figure>
+            {pokemon.sprites.back && (
+              <figure>
+                <CardImage large pokemon={pokemon} side="back" />
+                <figcaption className="capitalize text-center pt-4 italic">
+                  {pokemon.name} Back
+                </figcaption>
+              </figure>
+            )}
           </div>
         </section>
-        <section className="flex justify-evenly flex-wrap-reverse sm:gap-6">
-          <section className="flex flex-col gap-6 w-[30rem]">
+        <section className="flex justify-evenly flex-wrap sm:gap-6">
+          <section className="flex flex-col gap-6 w-screen sm:w-[35rem] rounded-xl bg-white shadow-lg p-6">
             <h2 className="text-5xl">Moves</h2>
-            <ScrollArea className="h-[30rem] w-full rounded-md border p-4 absolute">
+            <ScrollArea className="h-[25rem] rounded-md border p-4 absolute">
               <Table>
                 <TableHeader className="sticky top-0">
                   <TableRow>
@@ -126,7 +128,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
               </Table>
             </ScrollArea>
           </section>
-          <section className="flex flex-col gap-6 items-center w-[30rem]">
+          <section className="flex flex-col gap-6 w-screen sm:w-[35rem] bg-white shadow-lg rounded-xl p-6">
             <h2 className="text-5xl">Abilities</h2>
             <dl>
               {moves.pokemonabilities.map((m, i) => (
