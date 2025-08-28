@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useContext, useState } from "react";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -11,11 +11,8 @@ import {
 import Image from "next/image";
 import { PokemonTypes as types } from "@/lib/enums";
 import { useRouter } from "next/navigation";
-import { useType } from "@/provider/type-provider";
 
-function TypeSelect() {
-  const { type, setType } = useType();
-
+function TypeSelect({ slug }: { slug: string }) {
   const { replace } = useRouter();
   const path = "/types";
 
@@ -26,7 +23,7 @@ function TypeSelect() {
   return (
     <>
       <label htmlFor="type">Type:</label>
-      <Select name="type" value={type} onValueChange={(e) => updateType(e)}>
+      <Select name="type" value={slug} onValueChange={(e) => updateType(e)}>
         <SelectTrigger>
           <SelectValue placeholder="Pick a type" />
         </SelectTrigger>
