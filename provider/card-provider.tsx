@@ -1,6 +1,6 @@
 "use client";
 
-import { Pokemon } from "@/lib/types";
+import { AbilityPokemon } from "@/lib/types";
 import {
   createContext,
   Dispatch,
@@ -10,7 +10,7 @@ import {
 } from "react";
 
 type Context = {
-  pokemon: Pokemon;
+  pokemon: AbilityPokemon;
   flipped: boolean;
   setFlipped: Dispatch<SetStateAction<boolean>>;
 };
@@ -23,7 +23,7 @@ export function CardProvider({
   pokemon,
   children,
 }: {
-  pokemon: Pokemon;
+  pokemon: AbilityPokemon;
   children: React.ReactNode;
 }) {
   const [flipped, setFlipped] = useState<boolean>(false);

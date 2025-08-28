@@ -3,7 +3,6 @@ import Styles from "./pokemon-card.module.css";
 import { Button } from "../ui/button";
 import CardImage from "./card-image";
 import StatList from "./stat-list";
-import { Pokemon } from "@/lib/types";
 import Link from "next/link";
 import CardHeader from "./card-header";
 import CardContent from "./card-content";
@@ -19,7 +18,7 @@ export function CardSide() {
   return (
     <>
       <div className={`flex flex-col gap-4 ${Styles.flipCardFront}`}>
-        <CardImage side="front" />
+        <CardImage pokemon={pokemon} side="front" />
         <CardHeader />
         <CardContent>
           <StatList stats={page1stats} />
@@ -27,7 +26,7 @@ export function CardSide() {
         <CardButtons />
       </div>
       <div className={`flex flex-col gap-4 ${Styles.flipCardBack}`}>
-        <CardImage side="back" />
+        <CardImage pokemon={pokemon} side="back" />
         <CardHeader />
         <CardContent>
           <StatList stats={page2stats} />
@@ -48,7 +47,7 @@ function CardButtons() {
     <div className="flex justify-between">
       <Button onClick={() => flip()}>Flip</Button>
       <Button asChild>
-        <Link href={`${pokemon.id}`}>Details</Link>
+        <Link href={`/pokemon/${pokemon.id}`}>Details</Link>
       </Button>
     </div>
   );

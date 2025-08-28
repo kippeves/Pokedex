@@ -1,0 +1,13 @@
+dl {
+    display: grid;
+    grid-gap: 4px 16px;
+    grid-template-rows: 2rem;
+    grid-template-columns: 6rem 16rem;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin: 0;
+  grid-column-start: 2;
+}

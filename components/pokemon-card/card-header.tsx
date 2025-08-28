@@ -1,4 +1,4 @@
-import { Pokemon } from "@/lib/types";
+import { AbilityPokemon } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import CardIDBadge from "./card-id-badge";
 import TypeList from "./type-list";

@@ -8,7 +8,7 @@ export interface ResponseData {
 }
 
 export interface ApiResponse {
-  pokemon: Pokemon[]
+  pokemon: AbilityPokemon[]
   pages?: number
   total?: number
   currentPage?: number
@@ -23,7 +23,7 @@ export interface APIPokemon {
   pokemonstats: Pokemonstat[]
 }
 
-export interface Pokemon {
+export interface AbilityPokemon {
   id: number,
   name: string,
   sprites: Pokemonsprite,
@@ -65,4 +65,67 @@ export interface PokemonAggregate {
 
 export interface Aggregate {
   count: number
+}
+
+/**
+ * 
+ * 
+ * 
+ */
+
+export interface AbilityRoot {
+  data: Data
+}
+
+export interface Data {
+  pokemon: AbilityPokemon[]
+}
+
+export interface AbilityPokemon {
+  pokemonabilities: Pokemonability[]
+  pokemonmoves: Pokemonmfe[]
+}
+
+export interface Pokemonability {
+  ability: Ability
+}
+
+export interface Ability {
+  name: string
+  abilityeffecttexts: Abilityeffecttext[]
+}
+
+export interface Abilityeffecttext {
+  effect: string
+}
+
+export interface Pokemonmfe {
+  move: Move
+}
+
+export interface Move {
+  id: number
+  name: string
+  accuracy: number
+  pp: number
+  power?: number
+  moveflavortexts: Moveflavortext[]
+}
+
+export interface Moveflavortext {
+  flavor_text: string
+}
+
+export interface Pokemonability {
+  id: number
+  ability: Ability
+}
+
+export interface Ability {
+  name: string
+  abilityeffecttexts: Abilityeffecttext[]
+}
+
+export interface Abilityeffecttext {
+  effect: string
 }

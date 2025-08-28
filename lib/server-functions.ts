@@ -1,7 +1,7 @@
 "use server";
 
 import { faker } from "@faker-js/faker";
-import { ResponseRoot, ApiResponse, Pokemon } from "./types";
+import { ResponseRoot, ApiResponse, AbilityPokemon, AbilityRoot } from "./types";
 import Color from "colorjs.io";
 
 interface Options {
@@ -75,6 +75,38 @@ query searchByName($name: String = "%${search.toLowerCase()}%"){
 }
 `
 
+const abilitiesAndMovesById = (id: number) => `
+query getAbilitiesForPokemon($id: Int! = ${id}) {
+  pokemon(where: {id: {_eq: $id}}) {
+    pokemonmoves(distinct_on: move_id) {
+      move {
+        id
+        name
+        accuracy
+        pp
+        power
+        moveflavortexts(
+          limit: 1
+          order_by: {flavor_text: desc}
+          where: {language_id: {_eq: 9}}
+        ) {
+          flavor_text
+        }
+      }
+    }
+    pokemonabilities {
+      id
+      ability {
+        name
+        abilityeffecttexts(where: {language_id: {_eq: 9}}) {
+          effect
+        }
+      }
+    }
+  }
+}
+`
+
 const queryById = (ids: number[]) => `
 ${fragment}
 
@@ -103,6 +135,17 @@ export const getPokemonByType = async (type: string, page?: number) => getGraphQ
   }
 )
 
+export const GetAbilitiesForPokemon = async (id: number) => fetch(graphqlURI, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    query: abilitiesAndMovesById(id)
+  })
+}).then(async (res) => await res.json() as AbilityRoot);
+
+
 const getGraphQL = async (params?: RequestInit) => fetch(graphqlURI, {
   ...params,
   method: "POST",
@@ -123,7 +166,7 @@ const getGraphQL = async (params?: RequestInit) => fetch(graphqlURI, {
             name: s.stat.name,
             value: s.base_stat
           }))
-        })) as Pokemon[],
+        })) as AbilityPokemon[],
         currentPage: 0,
         total: data.data.pokemon_aggregate.aggregate.count,
         pages: Math.ceil(data.data.pokemon_aggregate.aggregate.count / 20)

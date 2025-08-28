@@ -1,9 +1,16 @@
 import Image from "next/image";
 import { typeToColor } from "./utils";
 import { useCard } from "@/provider/card-provider";
+import { AbilityPokemon } from "@/lib/types";
 
-export default function CardImage({ side }: { side: "front" | "back" }) {
-  const { pokemon } = useCard();
+export default function CardImage({
+  side,
+  pokemon,
+}: {
+  pokemon: AbilityPokemon;
+  side: "front" | "back";
+}) {
+  
   const { mainType, sprites, name } = pokemon;
   const sprite = side === "front" ? sprites.front : sprites.back;
   return (
