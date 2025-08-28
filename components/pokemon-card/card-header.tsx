@@ -14,7 +14,7 @@ export default function CardHeader({
     <div
       data-slot="card-header"
       className={cn(
-        "flex flex-col items-center justify-center gap-2 px-6",
+        "flex flex-col items-center justify-center gap-2",
         className
       )}
       {...props}

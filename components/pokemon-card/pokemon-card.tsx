@@ -17,10 +17,9 @@ export function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   const { flipped } = useCard();
-
-  const [flip] = useState(flipped);
+  
   return (
-    <div className={`max-w-53 ${Styles.flipCard}`}>
+    <div className={`max-w-64 ${Styles.flipCard}`}>
       <div
         data-slot="card"
         className={cn(

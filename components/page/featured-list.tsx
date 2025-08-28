@@ -1,6 +1,6 @@
 "use client";
 import React, { use } from "react";
-import { PokemonCard } from "../../components/pokemon-card/pokemon-card";
+import { PokemonCard } from "../pokemon-card/pokemon-card";
 import { ApiResponse } from "@/lib/types";
 
 function FeaturedList({ task }: { task: Promise<ApiResponse> }) {

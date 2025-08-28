@@ -10,15 +10,11 @@ import CardContent from "./card-content";
 import { useCard } from "@/provider/card-provider";
 
 export function CardSide() {
-  const { flipped, setFlipped, pokemon } = useCard();
+  const { pokemon } = useCard();
   const page1stats = pokemon.stats.filter((s) =>
     ["hp", "attack", "defense"].includes(s.name)
   );
   const page2stats = pokemon.stats.filter((e) => !page1stats.includes(e));
-
-  function flip(): void {
-    setFlipped(!flipped);
-  }
 
   return (
     <>

@@ -1,6 +1,5 @@
 "use client";
 import React, { FormEvent, useState } from "react";
-import { Input } from "../../components/ui/input";
 import { Search } from "lucide-react";
 import { redirect, RedirectType } from "next/navigation";
 

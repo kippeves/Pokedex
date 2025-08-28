@@ -5,6 +5,6 @@ export default function CardContent({
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div data-slot="card-content" className={cn("p-0", className)} {...props} />
+    <div data-slot="card-content " className={cn("p-0", className)} {...props} />
   );
 }

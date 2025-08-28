@@ -53,6 +53,28 @@ query getPerType($offset: Int = ${(page - 1) * 20}, $name: String = "${type}") {
   }
 }`
 
+const searchByName = (search: string) => `
+${fragment}
+
+query searchByName($name: String = "%${search.toLowerCase()}%"){
+  pokemon(
+    where: {name:  {
+       _ilike: $name
+    }}
+  ) {
+    ...data
+  }
+  pokemon_aggregate(
+    where: {name:  {
+     _ilike: $name
+  }}) {
+    aggregate {
+      count
+    }
+  }
+}
+`
+
 const queryById = (ids: number[]) => `
 ${fragment}
 
@@ -73,10 +95,10 @@ query getPerId($ids: [Int!] = [${ids.join(',')}]) {
 }`
 
 
-export const getPokemonByType = async (type: string) => getGraphQL(
+export const getPokemonByType = async (type: string, page?: number) => getGraphQL(
   {
     body: JSON.stringify({
-      query: queryByType(type)
+      query: queryByType(type, page)
     })
   }
 )
@@ -114,6 +136,12 @@ export const getPokemonById = async (ids: number[]) => getGraphQL(
     body: JSON.stringify({
       query: queryById(ids)
     })
+  }
+)
+
+export const searchPokemonByName = async (name: string) => getGraphQL(
+  {
+    body: JSON.stringify({ query: searchByName(name) })
   }
 )
 

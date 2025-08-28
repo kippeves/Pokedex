@@ -9,7 +9,7 @@ export default function CardImage({ side }: { side: "front" | "back" }) {
   return (
     <div
       style={{ borderColor: typeToColor(mainType.name) }}
-      className={`flex rounded-full h-36 w-36 border-6 justify-center items-center self-center overflow-hidden`}
+      className={`flex rounded-full h-36 drop-shadow-2xl w-36 border-6 justify-center self-center overflow-hidden`}
     >
       {sprite && (
         <Image

@@ -1,10 +1,20 @@
-import RandomPokemon from "./page/random-pokemon";
-import FeaturedList from "./page/featured-list";
+import Image from "next/image";
+import FeaturedList from "../components/page/featured-list";
 import { Suspense } from "react";
-import SearchArea from "@/app/page/search-area";
-import { fetchFiveRandom } from "@/lib/server";
+import SearchArea from "@/components/page/search-area";
+import { fetchFiveRandom, getRandom } from "@/lib/server-functions";
+import { PokemonCard } from "@/components/pokemon-card/pokemon-card";
+import Link from "next/link";
+import LoadRandom from "@/components/page/random-pokemon";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Promise<{ random?: string }>;
+}) {
+  const random = (await searchParams)?.random;
+  const randomPokemon = random?.length === 0 && getRandom();
+
   const task = fetchFiveRandom();
   return (
     <main className="content-grid min-h-screen">
@@ -16,20 +26,26 @@ export default async function Home() {
           Discover, search and explore the amazing world of Pokémon. Find
           <br /> your favourite and learn about their stats.
         </p>
-        <div className="pb-10">
-          <RandomPokemon />
+        <div className="pb-10 flex w-full flex-col justify-center items-center">
+          <Link href={"/?random"} className="btn-primary">
+            <Image src="/Dice.svg" width={25} height={25} alt="Dice" />
+            Random Pokémon
+          </Link>
+          <Suspense>
+            {randomPokemon && <LoadRandom task={randomPokemon} />}
+          </Suspense>
         </div>
       </section>
-      <section className="full-width items-center py-12 justify-items-center justify-center">
+      <section className="justify-items-center items-center py-12 full-width ">
         <Suspense>
           <SearchArea />
         </Suspense>
       </section>
-      <section className="full-width content-center bg-[#F0F0FC] pt-10 pb-20">
+      <section className="content-grid full-width bg-[#F0F0FC] pt-10 pb-20">
         <h1 className="font-jaldi text-5xl text-center pb-10">
           Featured Pokemon:
         </h1>
-        <div className="flex gap-4 justify-center">
+        <div className="breakout flex justify-center gap-4">
           <Suspense>
             <FeaturedList task={task} />
           </Suspense>

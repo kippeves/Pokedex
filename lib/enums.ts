@@ -1,8 +1,3 @@
-export enum TypeColors {
-  "Poison" = "purple",
-}
-
-
 export const PokemonTypes: { name: string, spritePath: string, color: string }[] = [
   {
     name: "bug",
