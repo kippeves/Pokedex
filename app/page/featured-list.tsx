@@ -1,15 +1,19 @@
 "use client";
-import React, { Suspense, use } from "react";
-import { PokemonCard } from "./pokemon-card";
+import React, { use } from "react";
+import { PokemonCard } from "../../components/pokemon-card/pokemon-card";
+import { ApiResponse } from "@/lib/types";
 
-function FeaturedList({ task }: { task: Promise<Pokemon[]> }) {
-  const data = use(task);
+function FeaturedList({ task }: { task: Promise<ApiResponse> }) {
+  const taskResponse = use(task);
+  const pokemon = taskResponse.pokemon;
   return (
-    <>
-      {data.map((e, i) => (
-        <PokemonCard key={i} pokemon={e} />
-      ))}
-    </>
+    taskResponse.pokemon && (
+      <>
+        {pokemon.map((e, i) => (
+          <PokemonCard key={i} pokemon={e} />
+        ))}
+      </>
+    )
   );
 }
 

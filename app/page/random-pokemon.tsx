@@ -1,20 +1,21 @@
 "use client";
-import { getRandom } from "@/lib/util";
 import Image from "next/image";
 import React, { useState } from "react";
-import { PokemonCard } from "./pokemon-card";
+import { PokemonCard } from "../../components/pokemon-card/pokemon-card";
+import { getRandom } from "@/lib/server";
 
 function RandomPokemon() {
-  const [pokemon, setPokemon] = useState<Pokemon>();
-  const getOneRandom = () => getRandom().then((p) => setPokemon(p));
+  function loadRandom(): void {
+    const pokemon = getRandom();
+  }
 
   return (
     <div className="flex flex-col mb-4">
-      <button className="btn-primary" onClick={() => getOneRandom()}>
+      <button className="btn-primary" onClick={() => loadRandom()}>
         <Image src="/Dice.svg" width={25} height={25} alt="Dice" />
         Random Pokémon
       </button>
-      {pokemon && <PokemonCard pokemon={pokemon} />}
+      {/* {pokemon && <PokemonCard pokemon={pokemon} />} */}
     </div>
   );
 }

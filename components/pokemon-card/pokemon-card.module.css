@@ -1,0 +1,34 @@
+.flipCard {
+  width: 100%;
+  height: 25em;
+}
+
+/* This container is needed to position the front and back side */
+.flipCardInner {
+  position: relative;
+  height: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flipCard:hover .flipCardInner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flipCardFront,
+.flipCardBack {
+  position: absolute;
+  height: 22rem;
+  width: 9.5rem;
+  -webkit-backface-visibility: hidden;
+  /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the back side */
+.flipCardBack {
+  transform: rotateY(180deg);
+}

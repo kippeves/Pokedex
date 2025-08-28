@@ -1,8 +1,8 @@
-import { fetchFiveRandom } from "@/lib/util";
 import RandomPokemon from "./page/random-pokemon";
 import FeaturedList from "./page/featured-list";
 import { Suspense } from "react";
 import SearchArea from "@/app/page/search-area";
+import { fetchFiveRandom } from "@/lib/server";
 
 export default async function Home() {
   const task = fetchFiveRandom();

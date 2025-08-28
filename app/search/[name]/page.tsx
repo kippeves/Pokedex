@@ -1,5 +1,5 @@
-import { PokemonCard } from "@/app/page/pokemon-card";
-import { getPokemonByName } from "@/lib/util";
+import { PokemonCard } from "@/components/pokemon-card/pokemon-card";
+import { getPokemonByName } from "@/lib/server";
 
 export default async function Page({
   params,
