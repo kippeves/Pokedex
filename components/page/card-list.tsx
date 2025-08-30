@@ -1,34 +1,24 @@
 "use client";
 import { PokemonCard } from "@/components/pokemon-card/pokemon-card";
 import { ApiResponse } from "@/lib/types";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import React, { use } from "react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationNext,
-} from "../ui/pagination";
 import ListPagination from "./list-pagination";
+import CardGrid from "./card-grid";
+import Styles from "./card-list.module.css";
 
 function CardList({ request }: { request: Promise<ApiResponse> }) {
   const data = use(request);
 
   return (
-    <>
+    <CardGrid>
       <ListPagination pages={data.pages} />
-      <div className="flex flex-col items-center w-full">
-        <div className="container xl:w-3/4 w-full justify-center flex flex-wrap gap-3 grow">
-          {data?.pokemon?.map((p, i) => (
-            <PokemonCard key={i} pokemon={p} />
-          ))}
-        </div>
+      <div className={`grid ${Styles.pokeGrid}`}>
+        {data?.pokemon?.map((p) => (
+          <PokemonCard key={p.id} pokemon={p} />
+        ))}
       </div>
       <ListPagination pages={data.pages} />
-    </>
+    </CardGrid>
   );
 }
 

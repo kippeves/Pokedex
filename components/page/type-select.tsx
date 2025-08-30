@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 
 function TypeSelect({ slug }: { slug: string }) {
   const { replace } = useRouter();
-  const path = "/types";
 
   function updateType(type: string): void {
     replace(`/types/${type}`);

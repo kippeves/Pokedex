@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Jaldi, Jersey_10 } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
-import Link from "next/link";
-import { MenuIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Menu from "@/components/page/navbar";
 
 const jaldi = Jaldi({

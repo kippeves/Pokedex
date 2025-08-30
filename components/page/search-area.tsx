@@ -1,33 +1,21 @@
-"use client";
-import React, { FormEvent, useState } from "react";
+"use server";
+import React from "react";
 import { Search } from "lucide-react";
 import { redirect, RedirectType } from "next/navigation";
 
 function SearchArea() {
-  const [error, setError] = useState<string>();
+  async function handleSubmit(formdata: FormData) {
+    "use server";
+    const searchName = formdata.get("name")?.toString();
+    if (!searchName || !searchName?.trim()) return;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    setError(undefined);
-    const p = new FormData(event.currentTarget);
-    const name = (p.get("name")?.toString() ?? "").trim();
-    if (!name.length) {
-      setError("Name can not be empty");
-      setTimeout(() => {
-        setError(undefined);
-      }, 1000);
-      return;
-    }
-    redirect(`/search/${name}`, RedirectType.push);
+    redirect(`/search/${searchName}`, RedirectType.push);
   }
 
   return (
-    <>
       <form
-        className={`border shadow-lg rounded-2xl py-2 px-4 flex justify-between gap-2 focus-within:outline-2 w-3/4 ${
-          error && "outline-red-500"
-        }`}
-        onSubmit={handleSubmit}
+        className={`border shadow-lg rounded-2xl py-2 px-4 flex gap-2 focus-within:outline-2 w-2/6`}
+        action={handleSubmit}
       >
         <input
           type="text"
@@ -43,10 +31,6 @@ function SearchArea() {
           <Search />
         </button>
       </form>
-      {error && (
-        <div className="pt-4 text-destructive">{error?.toString()}</div>
-      )}
-    </>
   );
 }
 

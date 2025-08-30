@@ -3,9 +3,9 @@ import FeaturedList from "../components/page/featured-list";
 import { Suspense } from "react";
 import SearchArea from "@/components/page/search-area";
 import { fetchFiveRandom, getRandom } from "@/lib/server-functions";
-import { PokemonCard } from "@/components/pokemon-card/pokemon-card";
 import Link from "next/link";
 import LoadRandom from "@/components/page/random-pokemon";
+import Loader from "@/components/page/loader";
 
 export default async function Home({
   searchParams,
@@ -17,7 +17,7 @@ export default async function Home({
 
   const task = fetchFiveRandom();
   return (
-    <main className="content-grid min-h-screen">
+    <main className="flex flex-col min-h-screen">
       <section className="items-center bg-gradient-to-br [background-image:linear-gradient(-10deg,_#C97FE4,_#AECDF6)] justify-items-center full-width">
         <h1 className="text-center mt-14 text-8xl font-extrabold text-transparent bg-gradient-to-r from-purple-800 to-blue-800 [background-clip:text]">
           Gotta catch em all!
@@ -36,17 +36,15 @@ export default async function Home({
           </Suspense>
         </div>
       </section>
-      <section className="justify-items-center items-center py-12 full-width ">
-        <Suspense>
-          <SearchArea />
-        </Suspense>
+      <section className="flex flex-col justify-center items-center py-12 ">
+        <SearchArea />
       </section>
-      <section className="content-grid full-width bg-[#F0F0FC] pt-10 pb-20">
+      <section className="content-grid full-width grow bg-[#F0F0FC] pt-10 pb-20">
         <h1 className="font-jaldi text-5xl text-center pb-10">
           Featured Pokemon:
         </h1>
         <div className="breakout flex flex-wrap justify-center gap-4">
-          <Suspense>
+          <Suspense fallback={<Loader />}>
             <FeaturedList task={task} />
           </Suspense>
         </div>

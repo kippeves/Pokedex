@@ -2,12 +2,6 @@
 
 import { faker } from "@faker-js/faker";
 import { ResponseRoot, ApiResponse, AbilityPokemon, AbilityRoot } from "./types";
-import Color from "colorjs.io";
-
-interface Options {
-  uri: string;
-  params?: RequestInit;
-}
 
 const graphqlURI = "https://graphql.pokeapi.co/v1beta2";
 

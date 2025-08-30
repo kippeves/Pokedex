@@ -6,6 +6,8 @@ import { getPokemonByType } from "@/lib/server-functions";
 import { ApiResponse } from "@/lib/types";
 import { Suspense } from "react";
 import CardList from "@/components/page/card-list";
+import Loader from "@/components/page/loader";
+import CardGrid from "@/components/page/card-grid";
 
 export default async function Page({
   searchParams,
@@ -29,18 +31,18 @@ export default async function Page({
   if (slug && !PokemonTypes.find((e) => e.name === slug[0])) return notFound();
   const path = slug?.[0];
   return (
-    <main className="grow">
+    <main className="content-grid flex flex-col grow">
       <nav className="full-width flex flex-col max-h-20 items-center justify-items-center gap-4">
         <h2 className="text-3xl">Pick your type:</h2>
         <div className="flex gap-4 items-center">
           <TypeSelect slug={path} />
         </div>
       </nav>
-      {request && (
-        <Suspense>
-          <CardList key={slug?.[0]} request={request} />
-        </Suspense>
-      )}
+      <Suspense fallback={<Loader />}>
+        <CardGrid>
+          {request && <CardList key={slug?.[0]} request={request} />}
+        </CardGrid>
+      </Suspense>
     </main>
   );
 }
