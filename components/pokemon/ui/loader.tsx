@@ -1,4 +1,4 @@
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { Spinner } from "../../ui/shadcn-io/spinner";
 
 import React from "react";
 

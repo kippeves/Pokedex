@@ -1,7 +1,11 @@
 import "./style.css";
-import CardImage from "@/components/pokemon-card/card-image";
-import TypeList from "@/components/pokemon-card/type-list";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import CardImage from "@/components/pokemon/card/single/card-image";
+import TypeList from "@/components/pokemon/card/single/type-list";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
@@ -30,9 +34,9 @@ function PokemonArticle({
 
   return (
     <>
-      <section className="flex flex-wrap gap-6 justify-evenly items-center">
-        <div className="flex flex-col justify-evenly w-screen sm:w-[35rem] sm:h-[21rem] bg-white p-7 rounded-xl shadow-lg">
-          <section className="flex flex-wrap gap-2 justify-between">
+      <section className="flex flex-wrap gap-3 justify-evenly items-center">
+        <div className="flex flex-col justify-evenly gap-4 w-screen sm:w-[35rem] bg-white p-7 rounded-xl shadow-lg">
+          <section className="flex flex-wrap justify-between">
             <h1 className="capitalize text-6xl items-center">{pokemon.name}</h1>
             <div className="flex items-center justify-center">
               <TypeList types={pokemon.types} />
@@ -64,16 +68,16 @@ function PokemonArticle({
             </div>
           </section>
         </div>
-        <div className="w-screen sm:w-[35rem] min-h-[21rem] z-0 flex flex-wrap justify-evenly items-center gap-2 rounded-xl bg-white shadow-lg p-6">
+        <div className="w-screen sm:w-[35rem] h-[22rem] z-0 flex flex-wrap justify-evenly items-center gap-2 rounded-xl bg-white shadow-lg p-6">
           <figure>
-            <CardImage pokemon={pokemon} side="front" />
+            <CardImage pokemon={pokemon} side="front" big filled />
             <figcaption className="capitalize text-center pt-4 italic">
               {pokemon.name} Front
             </figcaption>
           </figure>
           {pokemon.sprites.back && (
             <figure>
-              <CardImage pokemon={pokemon} side="back" />
+              <CardImage pokemon={pokemon} side="back" big filled />
               <figcaption className="capitalize text-center pt-4 italic">
                 {pokemon.name} Back
               </figcaption>
@@ -81,10 +85,10 @@ function PokemonArticle({
           )}
         </div>
       </section>
-      <section className="flex justify-evenly flex-wrap sm:gap-6">
-        <section className="flex flex-col gap-6 w-screen sm:w-[35rem] rounded-xl bg-white shadow-lg p-6">
+      <section className="flex justify-evenly flex-wrap sm:gap-3">
+        <section className="flex flex-col gap-6 w-screen sm:w-[35rem] h-[50rem] rounded-xl bg-white shadow-lg p-6">
           <h2 className="text-5xl">Moves</h2>
-          <ScrollArea className="h-[25rem] rounded-md border p-4 absolute">
+          <ScrollArea className="rounded-md border overflow-auto">
             <Table>
               <TableHeader className="sticky top-0">
                 <TableRow>

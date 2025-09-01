@@ -1,6 +1,6 @@
 import { ApiResponse } from "@/lib/types";
 import React, { use } from "react";
-import { PokemonCard } from "../pokemon-card/pokemon-card";
+import { PokemonCard } from "../card/single/pokemon-card";
 
 function LoadRandom({ task }: { task: Promise<ApiResponse> }) {
   const data = use(task);

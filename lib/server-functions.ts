@@ -1,4 +1,4 @@
-"use server";
+"server-only";
 
 import { faker } from "@faker-js/faker";
 import { ResponseRoot, ApiResponse, AbilityPokemon, AbilityRoot } from "./types";
@@ -27,25 +27,38 @@ fragment data on pokemon {
 }`
 
 
-const queryByType = (type: string, page = 1) => `
+const queryByType = (type_ids: number[], inclusive: boolean, page = 1) => {
+
+  const filters = type_ids.map((id) => `{
+    pokemontypes: {
+      type: { id: { _eq: ${id} } }
+    }
+  }`);
+
+
+  const filter = `${inclusive ? '_and' : '_or'}: [${filters.join(',').toString()}]`
+
+  const query = `
 ${fragment}
 
-query getPerType($offset: Int = ${(page - 1) * 20}, $name: String = "${type}") {
+query getPerType($offset: Int = ${(page - 1) * 20}) {
   pokemon(
     offset: $offset
     limit: 20
-    where: {pokemontypes: {type: {name: {_eq: $name}}}}
+    where: {${filter.toString()}}
   ) {
     ...data
   }
   pokemon_aggregate(
-    where: {pokemontypes: {type: {name: {_eq: $name}}}}
+    where: {${filter.toString()}}
   ) {
     aggregate {
       count
     }
   }
 }`
+return query;
+}
 
 const searchByName = (search: string) => `
 ${fragment}
@@ -121,10 +134,10 @@ query getPerId($ids: [Int!] = [${ids.join(',')}]) {
 }`
 
 
-export const getPokemonByType = async (type: string, page?: number) => getGraphQL(
+export const getPokemonByType = async (type: number[], page?: number) => getGraphQL(
   {
     body: JSON.stringify({
-      query: queryByType(type, page)
+      query: queryByType(type, true, page)
     })
   }
 )
@@ -143,6 +156,7 @@ export const GetAbilitiesForPokemon = async (id: number) => fetch(graphqlURI, {
 const getGraphQL = async (params?: RequestInit) => fetch(graphqlURI, {
   ...params,
   method: "POST",
+  cache: "force-cache",
   headers: {
     "Content-Type": "application/json"
   },
@@ -183,7 +197,6 @@ export const searchPokemonByName = async (name: string) => getGraphQL(
 )
 
 //export const getPokemonByName = async (name: string) => getData<Pokemon>({ uri: `pokemon/${name}` })
-export const getPokemonType = async (type: string) => getPokemonByType(type);
 export const getRandom = async () => getPokemonById([faker.number.int({ min: 1, max: 1000 })]);
 
 export const fetchFiveRandom = async () => {

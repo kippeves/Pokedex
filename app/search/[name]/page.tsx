@@ -1,5 +1,6 @@
-import CardList from "@/components/page/card-list";
-import Loader from "@/components/page/loader";
+import SearchArea from "@/components/pokemon/main/search-area";
+import { CardList } from "@/components/pokemon/types/layout/card-list";
+import Loader from "@/components/pokemon/ui/loader";
 import { searchPokemonByName } from "@/lib/server-functions";
 import { Suspense } from "react";
 
@@ -13,12 +14,17 @@ export default async function Page({
 
   return (
     pokemon && (
-      <div className="content-grid flex flex-col grow justify-center items-center gap-2">
-        <h1 className="text-center text-3xl">Dessa Pokemon hittades:</h1>
-        <Suspense fallback={<Loader text="Searching..." />}>
-          <CardList request={pokemon} />
-        </Suspense>
-      </div>
+      <>
+        <SearchArea value={name} />
+        <div className="content-grid flex flex-col grow justify-center items-start gap-2">
+          <div className="breakout grow">
+            <Suspense key={name} fallback={<Loader text="Searching..." />}>
+              <h1 className="text-center text-3xl">Results for &quot;{name}&quot;:</h1>
+              <CardList request={pokemon} />
+            </Suspense>
+          </div>
+        </div>
+      </>
     )
   );
 }

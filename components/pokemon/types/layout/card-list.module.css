@@ -1,4 +1,4 @@
-.pokeGrid {
+.List {
     gap: 1rem;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(16rem, max-content))

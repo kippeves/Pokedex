@@ -1,11 +1,11 @@
 import Image from "next/image";
-import FeaturedList from "../components/page/featured-list";
+import FeaturedList from "../components/pokemon/main/featured-list";
 import { Suspense } from "react";
-import SearchArea from "@/components/page/search-area";
+import SearchArea from "@/components/pokemon/main/search-area";
 import { fetchFiveRandom, getRandom } from "@/lib/server-functions";
 import Link from "next/link";
-import LoadRandom from "@/components/page/random-pokemon";
-import Loader from "@/components/page/loader";
+import LoadRandom from "@/components/pokemon/main/random-pokemon";
+import Loader from "@/components/pokemon/ui/loader";
 
 export default async function Home({
   searchParams,
@@ -31,19 +31,15 @@ export default async function Home({
             <Image src="/Dice.svg" width={25} height={25} alt="Dice" />
             Random Pokémon
           </Link>
-          <Suspense>
+          <Suspense fallback={<Loader/>}>
             {randomPokemon && <LoadRandom task={randomPokemon} />}
           </Suspense>
         </div>
       </section>
-      <section className="flex flex-col justify-center items-center py-12 ">
-        <SearchArea />
-      </section>
-      <section className="content-grid full-width grow bg-[#F0F0FC] pt-10 pb-20">
-        <h1 className="font-jaldi text-5xl text-center pb-10">
-          Featured Pokemon:
-        </h1>
-        <div className="breakout flex flex-wrap justify-center gap-4">
+      <SearchArea />
+      <section className="content-grid full-width grow items-start bg-[#F0F0FC] pt-10">
+        <h1 className="text-5xl text-center">Featured Pokemon:</h1>
+        <div className="breakout">
           <Suspense fallback={<Loader />}>
             <FeaturedList task={task} />
           </Suspense>

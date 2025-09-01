@@ -1,13 +1,11 @@
-//import { PokemonCard } from "../page/pokemon-card";
-import TypeSelect from "@/components/page/type-select";
+import TypeSelect from "@/components/pokemon/types/layout/type-select";
 import { PokemonTypes } from "@/lib/enums";
 import { notFound } from "next/navigation";
 import { getPokemonByType } from "@/lib/server-functions";
-import { ApiResponse } from "@/lib/types";
 import { Suspense } from "react";
-import CardList from "@/components/page/card-list";
-import Loader from "@/components/page/loader";
-import CardGrid from "@/components/page/card-grid";
+import { CardList } from "@/components/pokemon/types/layout/card-list";
+import Loader from "@/components/pokemon/ui/loader";
+import CardGrid from "@/components/pokemon/types/layout/card-grid";
 
 export default async function Page({
   searchParams,
@@ -17,31 +15,34 @@ export default async function Page({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
-  let request: Promise<ApiResponse> | undefined = undefined;
   const { page } = await searchParams;
-
-  if (slug && PokemonTypes.find((e) => e.name === slug[0])) {
-    const pageNo = Number(page);
-
-    request = !isNaN(pageNo)
-      ? getPokemonByType(slug[0], pageNo)
-      : getPokemonByType(slug[0]);
-  }
+  let pageNo = 0;
 
   if (slug && !PokemonTypes.find((e) => e.name === slug[0])) return notFound();
-  const path = slug?.[0];
+
+  const pokemonType = slug && PokemonTypes.find((e) => e.name === slug[0]);
+
+  pageNo = Number(page);
+  const request = pokemonType
+    ? !isNaN(pageNo)
+      ? getPokemonByType([pokemonType?.id], pageNo)
+      : getPokemonByType([pokemonType?.id])
+    : undefined;
+    
   return (
     <main className="content-grid flex flex-col grow">
       <nav className="full-width flex flex-col max-h-20 items-center justify-items-center gap-4">
         <h2 className="text-3xl">Pick your type:</h2>
         <div className="flex gap-4 items-center">
-          <TypeSelect slug={path} />
+          <TypeSelect slug={slug?.[0]} />
         </div>
       </nav>
-      <Suspense fallback={<Loader />}>
-        <CardGrid>
-          {request && <CardList key={slug?.[0]} request={request} />}
-        </CardGrid>
+      <Suspense key={pageNo} fallback={<Loader />}>
+        <div className="breakout">
+          <CardGrid>
+            {request && <CardList key={slug?.[0]} request={request} paginated />}
+          </CardGrid>
+        </div>
       </Suspense>
     </main>
   );

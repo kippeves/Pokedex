@@ -1,7 +1,7 @@
 import { Type } from "@/lib/types";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../../ui/badge";
 import { baseBadge, typeToColor } from "./utils";
-import { colorToDarker } from "@/lib/clientutils";
+import { changeLuminosity } from "@/lib/utils";
 
 export default function TypeList({ types }: { types: Type[] }) {
   return (
@@ -12,7 +12,7 @@ export default function TypeList({ types }: { types: Type[] }) {
           className={`rounded-full border-black capitalize`}
           style={{
             ...baseBadge,
-            border: `1px solid ${colorToDarker(typeToColor(name))}`,
+            border: `1px solid ${changeLuminosity(typeToColor(name), 35)}`,
             backgroundColor: typeToColor(name),
           }}
         >

@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../../ui/select";
 import Image from "next/image";
 import { PokemonTypes as types } from "@/lib/enums";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ function TypeSelect({ slug }: { slug: string }) {
 
   return (
     <>
-      <label htmlFor="type">Type:</label>
+      <label className="sr-only" htmlFor="type">Type:</label>
       <Select name="type" value={slug} onValueChange={(e) => updateType(e)}>
         <SelectTrigger>
           <SelectValue placeholder="Pick a type" />
