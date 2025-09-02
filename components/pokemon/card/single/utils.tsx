@@ -1,4 +1,4 @@
-import { PokemonTypes } from "@/lib/enums";
+import {  PokemonTypes } from "@/lib/enums";
 import { CSSProperties } from "react";
 
 export const typeToColor = (name: string) =>

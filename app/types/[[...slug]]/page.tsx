@@ -1,11 +1,12 @@
 import TypeSelect from "@/components/pokemon/types/layout/type-select";
-import { PokemonTypes } from "@/lib/enums";
 import { notFound } from "next/navigation";
-import { getPokemonByType } from "@/lib/server-functions";
 import { Suspense } from "react";
 import { CardList } from "@/components/pokemon/types/layout/card-list";
 import Loader from "@/components/pokemon/ui/loader";
 import CardGrid from "@/components/pokemon/types/layout/card-grid";
+import { PokemonTypes } from "@/lib/enums";
+import { Filter, runQuery } from "@/lib/server-functions";
+import { checkPage } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -16,19 +17,15 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const { page } = await searchParams;
-  let pageNo = 0;
 
   if (slug && !PokemonTypes.find((e) => e.name === slug[0])) return notFound();
 
   const pokemonType = slug && PokemonTypes.find((e) => e.name === slug[0]);
+  const filter =
+    pokemonType &&
+    checkPage({ type: { type_ids: [pokemonType.id], exclusive: true } }, page);
+  const request = filter && runQuery(filter);
 
-  pageNo = Number(page);
-  const request = pokemonType
-    ? !isNaN(pageNo)
-      ? getPokemonByType([pokemonType?.id], pageNo)
-      : getPokemonByType([pokemonType?.id])
-    : undefined;
-    
   return (
     <main className="content-grid flex flex-col grow">
       <nav className="full-width flex flex-col max-h-20 items-center justify-items-center gap-4">
@@ -37,10 +34,12 @@ export default async function Page({
           <TypeSelect slug={slug?.[0]} />
         </div>
       </nav>
-      <Suspense key={pageNo} fallback={<Loader />}>
+      <Suspense key={page} fallback={<Loader />}>
         <div className="breakout">
           <CardGrid>
-            {request && <CardList key={slug?.[0]} request={request} paginated />}
+            {request && (
+              <CardList key={slug?.[0]} request={request} paginated />
+            )}
           </CardGrid>
         </div>
       </Suspense>

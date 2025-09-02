@@ -1,7 +1,7 @@
 import { GetAbilitiesForPokemon, getPokemonById } from "@/lib/server-functions";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
-import PokemonArticle from "./pokemon-article";
+import PokemonArticle from "../../../components/pokemon/details/pokemon-article";
 import Loader from "@/components/pokemon/ui/loader";
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {

@@ -36,6 +36,7 @@ export default function CardImage({
           width={size}
           height={size}
           alt={name}
+          priority
         />
       )}
     </div>

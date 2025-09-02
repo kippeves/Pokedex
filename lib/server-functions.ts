@@ -3,8 +3,9 @@
 import { faker } from "@faker-js/faker";
 import { ResponseRoot, ApiResponse, AbilityPokemon, AbilityRoot } from "./types";
 
-const graphqlURI = "https://graphql.pokeapi.co/v1beta2";
+export interface Filter { name?: string, page?: number, type?: { exclusive: boolean, type_ids: number[] } }
 
+const graphqlURI = "https://graphql.pokeapi.co/v1beta2";
 const fragment = `
 fragment data on pokemon {
   id
@@ -27,60 +28,49 @@ fragment data on pokemon {
 }`
 
 
-const queryByType = (type_ids: number[], inclusive: boolean, page = 1) => {
+const buildFilter = (data: Filter) => {
+  const { name, type, page = 1 } = data;
+  let filter = "";
+  if (type) {
+    const { type_ids, exclusive } = type;
 
-  const filters = type_ids.map((id) => `{
+    const filters = type_ids.map((id) => `{
     pokemontypes: {
       type: { id: { _eq: ${id} } }
     }
   }`);
 
 
-  const filter = `${inclusive ? '_and' : '_or'}: [${filters.join(',').toString()}]`
+    filter += `${exclusive ? '_or' : '_and'}: [${filters.join(',').toString()}]
+    `
+  }
+  if (name)
+    filter += `_and: {
+        name:  {
+          _ilike: "%${name.toWellFormed().toLowerCase()}%"
+        }
+      }`
 
   const query = `
 ${fragment}
-
-query getPerType($offset: Int = ${(page - 1) * 20}) {
-  pokemon(
-    offset: $offset
-    limit: 20
-    where: {${filter.toString()}}
+  
+  {
+pokemon(
+    offset: ${(page - 1) * 20}
+    limit: 20 
+    where: {${filter}}
   ) {
     ...data
   }
   pokemon_aggregate(
-    where: {${filter.toString()}}
+    where: {${filter}}
   ) {
     aggregate {
       count
     }
-  }
-}`
-return query;
+}}`
+  return query;
 }
-
-const searchByName = (search: string) => `
-${fragment}
-
-query searchByName($name: String = "%${search.toLowerCase()}%"){
-  pokemon(
-    where: {name:  {
-       _ilike: $name
-    }}
-  ) {
-    ...data
-  }
-  pokemon_aggregate(
-    where: {name:  {
-     _ilike: $name
-  }}) {
-    aggregate {
-      count
-    }
-  }
-}
-`
 
 const abilitiesAndMovesById = (id: number) => `
 query getAbilitiesForPokemon($id: Int! = ${id}) {
@@ -118,7 +108,8 @@ const queryById = (ids: number[]) => `
 ${fragment}
 
 query getPerId($ids: [Int!] = [${ids.join(',')}]) {
-  pokemon(where: {id:  {
+  pokemon(where: {
+  id:  {
      _in: $ids
   }}) {
     ...data
@@ -134,10 +125,10 @@ query getPerId($ids: [Int!] = [${ids.join(',')}]) {
 }`
 
 
-export const getPokemonByType = async (type: number[], page?: number) => getGraphQL(
+export const runQuery = async (filter: Filter) => getGraphQL(
   {
     body: JSON.stringify({
-      query: queryByType(type, true, page)
+      query: buildFilter(filter)
     })
   }
 )
@@ -190,22 +181,16 @@ export const getPokemonById = async (ids: number[]) => getGraphQL(
   }
 )
 
-export const searchPokemonByName = async (name: string) => getGraphQL(
-  {
-    body: JSON.stringify({ query: searchByName(name) })
-  }
-)
-
 //export const getPokemonByName = async (name: string) => getData<Pokemon>({ uri: `pokemon/${name}` })
 export const getRandom = async () => getPokemonById([faker.number.int({ min: 1, max: 1000 })]);
 
-export const fetchFiveRandom = async () => {
-  const generateNumber = (value: number, earlier: number[]): number[] => {
+export const fetchFourRandom = async () => {
+  const generateNumber = (value: number, earlier: number[] = []): number[] => {
     if (!earlier.includes(value)) earlier.push(value);
     return earlier.length === 4
       ? earlier.sort()
       : generateNumber(faker.number.int({ min: 1, max: 1000 }), earlier);
   };
-  const randomIds = generateNumber(faker.number.int({ min: 1, max: 1000 }), []);
+  const randomIds = generateNumber(faker.number.int({ min: 1, max: 1000 }));
   return getPokemonById(randomIds)
 };

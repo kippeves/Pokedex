@@ -9,8 +9,8 @@ import {
   SelectValue,
 } from "../../../ui/select";
 import Image from "next/image";
-import { PokemonTypes as types } from "@/lib/enums";
 import { useRouter } from "next/navigation";
+import { PokemonTypes } from "@/lib/enums";
 
 function TypeSelect({ slug }: { slug: string }) {
   const { replace } = useRouter();
@@ -28,7 +28,7 @@ function TypeSelect({ slug }: { slug: string }) {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {types.map((type, index) => (
+            {PokemonTypes.map((type, index) => (
               <SelectItem
                 key={index}
                 value={type.name}

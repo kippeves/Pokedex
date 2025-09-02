@@ -1,16 +1,21 @@
 import SearchArea from "@/components/pokemon/main/search-area";
 import { CardList } from "@/components/pokemon/types/layout/card-list";
 import Loader from "@/components/pokemon/ui/loader";
-import { searchPokemonByName } from "@/lib/server-functions";
+import { Filter, runQuery } from "@/lib/server-functions";
+import { checkPage } from "@/lib/utils";
 import { Suspense } from "react";
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ name: string }>;
+  searchParams: Promise<{ page: string }>;
 }) {
   const { name } = await params;
-  const pokemon = searchPokemonByName(name);
+  const { page } = await searchParams;
+  const filter = checkPage({ name }, page);
+  const pokemon = runQuery(filter);
 
   return (
     pokemon && (
@@ -19,7 +24,9 @@ export default async function Page({
         <div className="content-grid flex flex-col grow justify-center items-start gap-2">
           <div className="breakout grow">
             <Suspense key={name} fallback={<Loader text="Searching..." />}>
-              <h1 className="text-center text-3xl">Results for &quot;{name}&quot;:</h1>
+              <h1 className="text-center text-3xl">
+                Results for &quot;{name}&quot;:
+              </h1>
               <CardList request={pokemon} />
             </Suspense>
           </div>

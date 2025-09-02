@@ -2,7 +2,7 @@ import Image from "next/image";
 import FeaturedList from "../components/pokemon/main/featured-list";
 import { Suspense } from "react";
 import SearchArea from "@/components/pokemon/main/search-area";
-import { fetchFiveRandom, getRandom } from "@/lib/server-functions";
+import { fetchFourRandom, getRandom } from "@/lib/server-functions";
 import Link from "next/link";
 import LoadRandom from "@/components/pokemon/main/random-pokemon";
 import Loader from "@/components/pokemon/ui/loader";
@@ -15,7 +15,7 @@ export default async function Home({
   const random = (await searchParams)?.random;
   const randomPokemon = random?.length === 0 && getRandom();
 
-  const task = fetchFiveRandom();
+  const task = fetchFourRandom();
   return (
     <main className="flex flex-col min-h-screen">
       <section className="items-center bg-gradient-to-br [background-image:linear-gradient(-10deg,_#C97FE4,_#AECDF6)] justify-items-center full-width">
