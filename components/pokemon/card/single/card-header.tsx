@@ -52,7 +52,7 @@ function CardIDBadge({ pokemon }: { pokemon: AbilityPokemon }) {
   };
   return (
     <Badge className="rounded-full" variant={"default"} style={idBadge}>
-      #{pokemon.id}
+      #{pokemon.pokemon_species_id}
     </Badge>
   );
 }

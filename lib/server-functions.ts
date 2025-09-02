@@ -10,6 +10,7 @@ const fragment = `
 fragment data on pokemon {
   id
   name
+  pokemon_species_id
   pokemonsprites {
       front:sprites(path: "front_default")
       back:sprites(path: "back_default")
@@ -41,7 +42,7 @@ const buildFilter = (data: Filter) => {
   }`);
 
 
-    filter += `${exclusive ? '_or' : '_and'}: [${filters.join(',').toString()}]
+    filter += `${exclusive ? '_and' : '_or'}: [${filters.join(',').toString()}]
     `
   }
   if (name)
@@ -58,17 +59,17 @@ ${fragment}
 pokemon(
     offset: ${(page - 1) * 20}
     limit: 20 
-    where: {${filter}}
+    ${filter ? 'where: {' + filter + '}' : ''}
   ) {
     ...data
   }
-  pokemon_aggregate(
-    where: {${filter}}
-  ) {
+  pokemon_aggregate${filter ? "(where: {" + filter + "})" : ""}
+   {
     aggregate {
       count
     }
 }}`
+
   return query;
 }
 
@@ -158,6 +159,7 @@ const getGraphQL = async (params?: RequestInit) => fetch(graphqlURI, {
         pokemon: data.data.pokemon.map(p => ({
           id: p.id,
           name: p.name,
+          pokemon_species_id: p.pokemon_species_id,
           mainType: p.pokemontypes[0].type,
           types: p.pokemontypes.map(p => p.type),
           sprites: p.pokemonsprites[0],

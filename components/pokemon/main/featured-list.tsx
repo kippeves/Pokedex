@@ -1,8 +1,8 @@
 "use client";
-import React, { use } from "react";
+import React from "react";
 import { ApiResponse } from "@/lib/types";
-import CardGrid from "../types/layout/card-grid";
-import { CardList } from "../types/layout/card-list";
+import CardGrid from "../card/list/card-grid";
+import { CardList } from "../card/list/card-list";
 
 function FeaturedList({ task }: { task: Promise<ApiResponse> }) {
   return (

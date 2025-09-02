@@ -18,6 +18,7 @@ export interface ApiResponse {
 export interface APIPokemon {
   id: number
   name: string
+  pokemon_species_id: number
   pokemonsprites: Pokemonsprite[]
   pokemontypes: Pokemontype[]
   pokemonstats: Pokemonstat[]
@@ -26,6 +27,7 @@ export interface APIPokemon {
 export interface AbilityPokemon {
   id: number,
   name: string,
+  pokemon_species_id: number
   sprites: Pokemonsprite,
   mainType: Type,
   types: Type[],

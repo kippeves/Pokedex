@@ -55,7 +55,7 @@ function ListPagination({ pages }: { pages?: number }) {
       <PaginationContent>
         {currentPageNo && currentPageNo - 1 > 0 && <PreviousLink />}
         <Links />
-        {pages && currentPageNo && currentPageNo + 1 < pages && <NextLink />}
+        {pages && currentPageNo + 1 <= pages && <NextLink />}
       </PaginationContent>
     </Pagination>
   );

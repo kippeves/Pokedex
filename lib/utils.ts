@@ -18,7 +18,7 @@ export const checkPage = (filter: Filter, page?: string) => {
     const parsed = Number(page);
     if (!isNaN(parsed)) {
       filter.page = parsed;
-    }
+    } else filter.page = 1
   }
   return filter;
 }

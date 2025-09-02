@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../ui/select";
+} from "../../ui/select";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PokemonTypes } from "@/lib/enums";

@@ -1,7 +1,8 @@
+import { CardList } from "@/components/pokemon/card/list/card-list";
 import SearchArea from "@/components/pokemon/main/search-area";
-import { CardList } from "@/components/pokemon/types/layout/card-list";
+
 import Loader from "@/components/pokemon/ui/loader";
-import { Filter, runQuery } from "@/lib/server-functions";
+import { runQuery } from "@/lib/server-functions";
 import { checkPage } from "@/lib/utils";
 import { Suspense } from "react";
 

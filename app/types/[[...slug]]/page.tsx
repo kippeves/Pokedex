@@ -1,12 +1,13 @@
-import TypeSelect from "@/components/pokemon/types/layout/type-select";
+import TypeSelect from "@/components/pokemon/main/type-select";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { CardList } from "@/components/pokemon/types/layout/card-list";
+
 import Loader from "@/components/pokemon/ui/loader";
-import CardGrid from "@/components/pokemon/types/layout/card-grid";
+import CardGrid from "@/components/pokemon/card/list/card-grid";
 import { PokemonTypes } from "@/lib/enums";
-import { Filter, runQuery } from "@/lib/server-functions";
+import { runQuery } from "@/lib/server-functions";
 import { checkPage } from "@/lib/utils";
+import { CardList } from "@/components/pokemon/card/list/card-list";
 
 export default async function Page({
   searchParams,
