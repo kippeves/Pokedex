@@ -14,7 +14,7 @@ export function PokemonCard({ pokemon }: { pokemon: AbilityPokemon }) {
   );
   return (
     <CardProvider pokemon={pokemon}>
-      <Link href={`/pokemon/${pokemon.pokemon_species_id}`} className={`max-w-64 min-w-64`}>
+      <Link href={`/pokemon/${pokemon.pokemon_species_id}`} className={`w-64`}>
         <div
           data-slot="card"
           className={cn(

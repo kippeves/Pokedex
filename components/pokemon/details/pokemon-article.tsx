@@ -85,8 +85,8 @@ function PokemonArticle({
           )}
         </div>
       </section>
-      <section className="flex justify-evenly flex-wrap sm:gap-3">
-        <section className="flex flex-col gap-6 w-screen sm:w-[35rem] h-[50rem] rounded-xl bg-white shadow-lg p-6">
+      <section className="flex justify-evenly flex-wrap sm:gap-3 h-full">
+        <section className="flex flex-col gap-6 w-screen sm:w-[35rem] max-h-[40rem] rounded-xl bg-white shadow-lg p-6">
           <h2 className="text-5xl">Moves</h2>
           <ScrollArea className="rounded-md border overflow-auto">
             <Table>

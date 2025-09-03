@@ -37,11 +37,7 @@ export default async function Page({
       </nav>
       <Suspense key={page} fallback={<Loader />}>
         <div className="breakout">
-          <CardGrid>
-            {request && (
-              <CardList key={slug?.[0]} request={request} paginated />
-            )}
-          </CardGrid>
+          {request && <CardList key={slug?.[0]} request={request} paginated />}
         </div>
       </Suspense>
     </main>
