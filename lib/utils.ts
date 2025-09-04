@@ -16,7 +16,7 @@ export const changeLuminosity = (colorStr: string, value: number) => {
 export const checkPage = (filter: Filter, page?: string) => {
   if (page && page?.length) {
     const parsed = Number(page);
-    if (!isNaN(parsed)) {
+    if (!isNaN(parsed) && parsed > 0) {
       filter.page = parsed;
     } else filter.page = 1
   }
