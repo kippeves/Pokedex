@@ -5,11 +5,7 @@ import Loader from "@/components/pokemon/ui/loader";
 import { Filter, runQuery } from "@/lib/server-functions";
 import { CardList } from "@/components/pokemon/card/list/card-list";
 import { checkPage } from "@/lib/utils";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/pokedex/app-sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -32,7 +28,7 @@ export default async function Page(props: {
     };
   }
 
-  if(queries.name && queries.name.length){
+  if (queries.name && queries.name.length) {
     filter.name = queries.name;
   }
 

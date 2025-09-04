@@ -1,9 +1,7 @@
 import TypeSelect from "@/components/pokemon/main/type-select";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
 import Loader from "@/components/pokemon/ui/loader";
-import CardGrid from "@/components/pokemon/card/list/card-grid";
 import { PokemonTypes } from "@/lib/enums";
 import { runQuery } from "@/lib/server-functions";
 import { checkPage } from "@/lib/utils";

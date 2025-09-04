@@ -1,6 +1,5 @@
 import { cn, changeLuminosity } from "@/lib/utils";
-import { useCard } from "@/provider/card-provider";
-import { Ability, AbilityPokemon, APIPokemon } from "@/lib/types";
+import { AbilityPokemon } from "@/lib/types";
 import { CSSProperties } from "react";
 import { typeToColor, baseBadge } from "./utils";
 import { Badge } from "../../../ui/badge";
