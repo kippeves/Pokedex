@@ -15,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Page(props: {
   searchParams: Promise<{
+    name?: string;
     type?: string;
     page?: string;
   }>;
@@ -30,6 +31,11 @@ export default async function Page(props: {
       exclusive: true,
     };
   }
+
+  if(queries.name && queries.name.length){
+    filter.name = queries.name;
+  }
+
   if (queries.page && isNaN(Number(queries.page))) {
     const newParams = new URLSearchParams(queries);
     newParams.delete("page");
@@ -46,14 +52,14 @@ export default async function Page(props: {
     <main className="relative content-grid flex flex-col grow">
       <SidebarProvider
         defaultOpen={false}
-        className="absolute left-0 h-full min-h-full overflow-hidden breakout w-full rounded-xl"
+        className="absolute left-0 h-full min-h-full overflow-hidden breakout w-full"
       >
         <AppSidebar />
-        <article className="breakout grow flex flex-col h-[90dvh]">
-          <header className="border rounded-t-xl">
+        <article className="breakout grow flex flex-col h-full">
+          <header className="border border-x-0 border-t-0 border-b-black flex justify-end pb-2 px-4">
             <SidebarTrigger />
           </header>
-          <ScrollArea className="grow -mt-2 w-full h-full overflow-y-scroll p-3 border-x border-b rounded-b-xl">
+          <ScrollArea className="grow w-full h-full overflow-auto px3">
             <Suspense
               key={JSON.stringify(filter)}
               fallback={<Loader text="Searching..." />}
