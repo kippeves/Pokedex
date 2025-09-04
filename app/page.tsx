@@ -6,6 +6,7 @@ import { fetchFourRandom, getRandom } from "@/lib/server-functions";
 import Link from "next/link";
 import LoadRandom from "@/components/pokemon/main/random-pokemon";
 import Loader from "@/components/pokemon/ui/loader";
+import Footer from "@/components/page/footer";
 
 export default async function Home({
   searchParams,
@@ -31,7 +32,7 @@ export default async function Home({
             <Image src="/Dice.svg" width={25} height={25} alt="Dice" />
             Random Pokémon
           </Link>
-          <Suspense fallback={<Loader/>}>
+          <Suspense fallback={<Loader />}>
             {randomPokemon && <LoadRandom task={randomPokemon} />}
           </Suspense>
         </div>
@@ -45,6 +46,7 @@ export default async function Home({
           </Suspense>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
