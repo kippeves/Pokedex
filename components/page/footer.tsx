@@ -18,7 +18,7 @@ function Footer() {
         />
         <Image
           src={"/Instagram.svg"}
-          alt="Facebook Logo"
+          alt="Instagram Logo"
           width={40}
           height={40}
         />
