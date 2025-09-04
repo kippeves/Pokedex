@@ -1,16 +1,21 @@
-import TypeSelect from "@/components/pokemon/main/type-select";
 import { PokemonTypes } from "@/lib/enums";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Loader from "@/components/pokemon/ui/loader";
-import { unescape } from "querystring";
 import { Filter, runQuery } from "@/lib/server-functions";
-import CardGrid from "@/components/pokemon/card/list/card-grid";
 import { CardList } from "@/components/pokemon/card/list/card-list";
 import { checkPage } from "@/lib/utils";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/pokedex/app-sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Page(props: {
   searchParams: Promise<{
+    name?: string;
     type?: string;
     page?: string;
   }>;
@@ -26,48 +31,44 @@ export default async function Page(props: {
       exclusive: true,
     };
   }
-  if (isNaN(Number(queries.page))) {
+
+  if(queries.name && queries.name.length){
+    filter.name = queries.name;
+  }
+
+  if (queries.page && isNaN(Number(queries.page))) {
     const newParams = new URLSearchParams(queries);
     newParams.delete("page");
     redirect("/pokedex?" + newParams);
   }
+
   if (queries.page) {
     filter = checkPage(filter, queries.page);
   }
 
-  const request = runQuery(filter ?? {});
+  const request = runQuery(filter);
 
-  //   const typesVal = dataMap.get("type");
-  // const types = typesVal?.split(",");
-  // const typesWithFilter = types?.filter((t) =>
-  //   PokemonTypes.find((pt) => pt.name === t)
-  // );
-  // const hasInvalidType =
-  //   JSON.stringify(types) !== JSON.stringify(typesWithFilter);
-
-  // const hasEmptyValues = [...dataMap].some(([, value]) => !value.trim().length);
-
-  // if (hasInvalidType || hasEmptyValues) {
-  //   const URI = [...dataMap]
-  //     .map((entry) => {
-  //       if (entry[0] === "type")
-  //         return `${entry[0]}=${typesWithFilter?.join(",")}`;
-  //       if (entry[1]) return `${entry[0]}=${entry[1]}`;
-  //     })
-  //     .join("/");
-  //   redirect("/pokedex/" + URI);
-  // }
   return (
-    <main className="content-grid flex flex-col grow">
-      <Suspense fallback={<Loader />}>
-        <div className="breakout">
-          {
-            <CardGrid>
-              {request && <CardList request={request} paginated />}
-            </CardGrid>
-          }
-        </div>
-      </Suspense>
+    <main className="relative content-grid flex flex-col grow">
+      <SidebarProvider
+        defaultOpen={false}
+        className="absolute left-0 h-full min-h-full overflow-hidden breakout w-full"
+      >
+        <AppSidebar />
+        <article className="breakout grow flex flex-col h-full">
+          <header className="border border-x-0 border-t-0 border-b-black flex justify-end pb-2 px-4">
+            <SidebarTrigger />
+          </header>
+          <ScrollArea className="grow w-full h-full overflow-auto px3">
+            <Suspense
+              key={JSON.stringify(filter)}
+              fallback={<Loader text="Searching..." />}
+            >
+              <CardList request={request} />
+            </Suspense>
+          </ScrollArea>
+        </article>
+      </SidebarProvider>
     </main>
   );
 }

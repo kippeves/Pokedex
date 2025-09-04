@@ -32,50 +32,48 @@ fragment data on pokemon {
 const buildFilter = (data: Filter) => {
   const { name, type, page = 1 } = data;
   let filter = "";
+  const excl_items: string[] = [];
+  const incl_items: string[] = [];
+
   if (type) {
     const { type_ids, exclusive } = type;
 
-    const filters = type_ids.map((id) => `{
-    pokemontypes: {
+    const items = type_ids.map((id) => `{ pokemontypes: {
       type: { id: { _eq: ${id} } }
-    }
-  }`);
-
-
-    filter += `${exclusive ? '_and' : '_or'}: [${filters.join(',').toString()}]
-    `
+    }}`);
+    (exclusive ? excl_items : incl_items).push(...items);
   }
-  if (name)
-    filter += `_and: {
-        name:  {
-          _ilike: "%${name.toWellFormed().toLowerCase()}%"
-        }
-      }`
+  if (name) {
+    excl_items.push(`{ name:  {
+      _ilike: "%${name.toWellFormed().toLowerCase()}%"
+    }}`)
+  }
+  filter += excl_items.length ? '_and: [' + excl_items.join(",") + ']' : '';
+  filter += incl_items.length ? '_or: [' + incl_items.join() + ']' : '';
 
   const query = `
 ${fragment}
-  
+
   {
-pokemon(
-    offset: ${(page - 1) * 20}
-    limit: 20 
+    pokemon(
+      offset: ${(page - 1) * 20}
+  limit: 20 
     ${filter ? 'where: {' + filter + '}' : ''}
   ) {
     ...data
-  }
+}
   pokemon_aggregate${filter ? "(where: {" + filter + "})" : ""}
-   {
+{
     aggregate {
-      count
-    }
+    count
+  }
 }}`
-
   return query;
 }
 
 const abilitiesAndMovesById = (id: number) => `
 query getAbilitiesForPokemon($id: Int! = ${id}) {
-  pokemon(where: {id: {_eq: $id}}) {
+  pokemon(where: { id: { _eq: $id } }) {
     pokemonmoves(distinct_on: move_id) {
       move {
         id
@@ -85,8 +83,8 @@ query getAbilitiesForPokemon($id: Int! = ${id}) {
         power
         moveflavortexts(
           limit: 1
-          order_by: {flavor_text: desc}
-          where: {language_id: {_eq: 9}}
+          order_by: { flavor_text: desc }
+          where: { language_id: { _eq: 9 } }
         ) {
           flavor_text
         }
@@ -96,7 +94,7 @@ query getAbilitiesForPokemon($id: Int! = ${id}) {
       id
       ability {
         name
-        abilityeffecttexts(where: {language_id: {_eq: 9}}) {
+        abilityeffecttexts(where: { language_id: { _eq: 9 } }) {
           effect
         }
       }
@@ -110,20 +108,23 @@ ${fragment}
 
 query getPerId($ids: [Int!] = [${ids.join(',')}]) {
   pokemon(where: {
-  id:  {
-     _in: $ids
-  }}) {
+    id: {
+      _in: $ids
+    }
+  }) {
     ...data
   }
   pokemon_aggregate(
-    where: {id:  {
-     _in: $ids
-  }}) {
+    where: {
+    id: {
+      _in: $ids
+    }
+  }) {
     aggregate {
       count
     }
   }
-}`
+} `
 
 
 export const runQuery = async (filter: Filter) => getGraphQL(
@@ -183,7 +184,7 @@ export const getPokemonById = async (ids: number[]) => getGraphQL(
   }
 )
 
-//export const getPokemonByName = async (name: string) => getData<Pokemon>({ uri: `pokemon/${name}` })
+//export const getPokemonByName = async (name: string) => getData<Pokemon>({ uri: `pokemon / ${ name } ` })
 export const getRandom = async () => getPokemonById([faker.number.int({ min: 1, max: 1000 })]);
 
 export const fetchFourRandom = async () => {
