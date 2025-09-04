@@ -15,7 +15,7 @@ export function CardList({
 }) {
   const data = use(request);
 
-  return (
+  return data.pokemon.length ? (
     <CardGrid>
       {pages && <ListPagination pages={data.pages} />}
       <div className={`grid ${Styles.List}`}>
@@ -25,5 +25,9 @@ export function CardList({
       </div>
       {pages && <ListPagination pages={data.pages} />}
     </CardGrid>
+  ) : (
+    <div>
+      There was no pokemon :(
+    </div>
   );
 }

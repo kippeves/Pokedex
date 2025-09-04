@@ -34,12 +34,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ?.filter((p) => typesWithFilter?.find((t) => t.name === p.label))
     .map((i) => i.value);
 
+  const createParams = (key: string, value: string) => {
+    const newParams = new URLSearchParams(params);
+    if (value.length) {
+      newParams.set(key, value);
+      newParams.delete("page");
+    } else newParams.delete(key);
+    return newParams;
+  };
+
   const debounced = useDebouncedCallback(
     // function
     (value) => {
-      const newParams = new URLSearchParams(params);
-      if (value.length) newParams.set("name", value);
-      else newParams.delete("name");
+      const newParams = createParams("name", value);
       replace(decodeURIComponent(`${path}${newParams && "?" + newParams}`));
     },
     // delay in ms
@@ -47,9 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   );
 
   function readChanges(values: string[]): void {
-    const newParams = new URLSearchParams(params);
-    if (values.length) newParams.set("type", values.join(","));
-    else newParams.delete("type");
+    const newParams = createParams("type", values.join());
     replace(decodeURIComponent(`${path}${newParams && "?" + newParams}`));
   }
 

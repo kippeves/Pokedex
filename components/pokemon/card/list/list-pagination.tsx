@@ -3,6 +3,7 @@ import React from "react";
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -34,27 +35,63 @@ function ListPagination({ pages }: { pages?: number }) {
     );
   };
 
-  const Links = () =>
-    Array.from({ length: pages ?? 1 }).map((_, index) => {
-      const newIndex = index + 1;
-      newParams.set("page", `${newIndex}`);
-      return (
-        <PaginationItem key={index}>
-          <PaginationLink
-            isActive={currentPageNo === newIndex}
-            href={`${path}?${newParams}`}
-          >
-            {newIndex}
-          </PaginationLink>
-        </PaginationItem>
+  const PageEllipsis = () => {
+    return (
+      <PaginationItem>
+        <PaginationEllipsis />
+      </PaginationItem>
+    );
+  };
+
+  const createLink = (index: number) => {
+    const newIndex = index + 1;
+    newParams.set("page", `${newIndex}`);
+    return (
+      <PaginationItem key={index} className="flex flex-col">
+        <PaginationLink
+          isActive={currentPageNo === newIndex}
+          href={`${path}?${newParams}`}
+        >
+          {newIndex}
+        </PaginationLink>
+      </PaginationItem>
+    );
+  };
+
+  const Links = () => {
+    const maxPages = pages ? pages - 1 : 1;
+    const current = Number(currentPage ?? "1");
+    const createLinksBetwenIndex = (start: number, end: number) => {
+      const items = [];
+
+      if (start - 1 > 0)
+        items.push([createLink(0), <PageEllipsis key={"back"} />]);
+
+      items.push(
+        ...Array.from({ length: end - start }, (i, index) =>
+          createLink(start + index)
+        )
       );
-    });
+      if (end + 1 < maxPages) {
+        items.push(<PageEllipsis key={"forward"} />, createLink(maxPages));
+      }
+      return items;
+    };
+    const links = createLinksBetwenIndex(
+      current - 2 > 0 ? current - 2 : 0,
+      current + 2 <= maxPages ? current + 2 : maxPages+1
+    );
+
+    return links;
+  };
 
   return (
     <Pagination className="full-width h-20 py-4">
       <PaginationContent>
         {currentPageNo && currentPageNo - 1 > 0 && <PreviousLink />}
+
         <Links />
+
         {pages && currentPageNo + 1 <= pages && <NextLink />}
       </PaginationContent>
     </Pagination>
