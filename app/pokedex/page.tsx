@@ -55,7 +55,7 @@ export default async function Page(props: {
           <header className="border border-x-0 border-t-0 border-b-black flex justify-end pb-2 px-4">
             <SidebarTrigger />
           </header>
-          <ScrollArea className="grow w-full h-full overflow-auto p-3">
+          <ScrollArea className="grow w-full h-full overflow-hidden p-3">
             <Suspense
               key={JSON.stringify(filter)}
               fallback={<Loader text="Searching..." />}
